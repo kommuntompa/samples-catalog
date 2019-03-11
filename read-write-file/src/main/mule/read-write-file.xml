@@ -7,21 +7,34 @@
       xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
             http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
 
-    <file:config name="File_Config" doc:name="File Config" doc:id="cbe27bd8-6583-4c05-8bc5-89bade4ca823" >
-        <file:connection workingDir="yourPath\src\main\resources" />
+    <configuration-properties doc:name="Configuration properties" file="mule-artifact.properties" />
+
+    <file:config name="file_config" doc:name="File Configuration">
+        <file:connection workingDir="c:\temp" />
     </file:config>
 
-    <flow name="read-write-file-sample" doc:id="f7ceb103-2f4d-4d28-89a0-2d5427d91301" >
+    <flow name="read-write-file-sample">
 
-        <scheduler doc:name="Scheduler" doc:id="432d0cc7-14c3-48b1-a819-72c7c47722fc" >
-            <scheduling-strategy >
-                <fixed-frequency frequency="20000"/>
+        <scheduler doc:name="read-write-file-scheduler">
+            <scheduling-strategy>
+                <fixed-frequency frequency="${read-write-file.polling.frequency}"/>
             </scheduling-strategy>
         </scheduler>
 
-        <file:read config-ref="File_Config" path="input.csv" doc:name="Read CSV file" doc:id="663f1e97-9f52-40e6-a4b3-deeaa943cfb3" />
+        <logger level="INFO" message="#['Starting read-write-file flow']"/>
 
-        <logger level="INFO" doc:name="Log objects to save" doc:id="efc027eb-74cf-458b-b514-c9dd134388a5" message="#['Saving objects: ' ++ write(payload, 'application/json', {&quot;indent&quot;: &quot;false&quot;})]"/>
+        <file:write config-ref="file_config" path="ping.txt">
+            <file:content>
+                #['Look Ma! I can write to a file']
+            </file:content>
+        </file:write>
+
+        <logger level="INFO" message="#['Added content to ping.txt']"/>
+
+        <file:move config-ref="file_config" sourcePath="ping.txt" overwrite="true" targetPath="backup" renameTo="pong.txt"/>
+
+        <logger level="INFO" message="#['Moved ping.txt to backup\pong.txt with overwriting enabled']"/>
 
     </flow>
+
 </mule>

@@ -40,7 +40,7 @@
                <version>${mule.maven.plugin.version}</version>
                <extensions>true</extensions>
                <configuration>
-                   <classifier>mule-application-example</classifier>
+                   <classifier>sample</classifier>
                    <!-- Fix until MMP-305 is solved -->
                    <attachMuleSources>true</attachMuleSources>
                </configuration>
