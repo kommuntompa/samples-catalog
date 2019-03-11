@@ -1,0 +1,40 @@
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+            http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+            http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+
+    <configuration-properties doc:name="Configuration properties" file="mule-artifact.properties" />
+
+    <http:request-config name="client_config" doc:name="HTTP client configuration">
+        <http:request-connection protocol="HTTPS" host="jsonplaceholder.typicode.com" port="443"/>
+    </http:request-config>
+
+    <file:config name="file_config" doc:name="File Configuration">
+        <file:connection workingDir="c:\temp" />
+    </file:config>
+
+    <flow name="read-ws-write-file-sample">
+
+        <scheduler doc:name="read-ws-write-file-scheduler">
+            <scheduling-strategy>
+                <fixed-frequency frequency="${read-ws.polling.frequency}"/>
+            </scheduling-strategy>
+        </scheduler>
+
+        <http:request method="GET" path="todos" config-ref="client_config" />
+
+        <logger level="INFO" message="#['Executed HTTP GET from Server']"/>
+
+        <file:write config-ref="file_config" path="jsonplaceholder.typicode.com.txt">
+            <file:content>#[payload]</file:content>
+        </file:write>
+
+        <logger level="INFO" message="#['Stored content from WS in jsonplaceholder.typicode.com.txt']"/>
+
+    </flow>
+
+</mule>

@@ -8,6 +8,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>read-write-file</module>
+        <module>read-ws-write-file</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

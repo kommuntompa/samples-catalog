@@ -1,0 +1,20 @@
+{
+  "domain": "default",
+  "configs": [
+    "read-ws-write-file.xml"
+  ],
+  "redeploymentEnabled": true,
+  "name": "Read from HTTPs and Write to a file using Community Edition",
+  "minMuleVersion": "4.1.1",
+  "requiredProduct": "MULE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedResources": []
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}
