@@ -1,0 +1,20 @@
+{
+  "configs": [
+    "read-write-file.xml"
+  ],
+  "secureProperties": [],
+  "redeploymentEnabled": true,
+  "name": "Read and Write a file using Community Edition",
+  "minMuleVersion": "4.1.1",
+  "requiredProduct": "MULE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedResources": []
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}
