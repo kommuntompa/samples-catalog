@@ -93,12 +93,12 @@
       </snapshots>
       <id>mulesoft-releases</id>
       <name>mulesoft release repository</name>
-      <url>http://repository.mulesoft.org/releases/</url>
+      <url>https://repository.mulesoft.org/releases/</url>
     </pluginRepository>
     <pluginRepository>
       <id>mulesoft-snapshots</id>
       <name>mulesoft snapshots repository</name>
-      <url>http://repository.mulesoft.org/snapshots/</url>
+      <url>https://repository.mulesoft.org/snapshots/</url>
     </pluginRepository>
     <pluginRepository>
       <releases>
@@ -113,22 +113,22 @@
     </pluginRepository>
   </pluginRepositories>
   <build>
-    <sourceDirectory>C:\dev\projects\mule\sandbox\read-write-file\src\main\java</sourceDirectory>
-    <scriptSourceDirectory>C:\dev\projects\mule\sandbox\read-write-file\src\main\scripts</scriptSourceDirectory>
-    <testSourceDirectory>C:\dev\projects\mule\sandbox\read-write-file\src\test\java</testSourceDirectory>
-    <outputDirectory>C:\dev\projects\mule\sandbox\read-write-file\target\classes</outputDirectory>
-    <testOutputDirectory>C:\dev\projects\mule\sandbox\read-write-file\target\test-classes</testOutputDirectory>
+    <sourceDirectory>C:\dev\projects\mule\samples-catalog\read-write-file\src\main\java</sourceDirectory>
+    <scriptSourceDirectory>C:\dev\projects\mule\samples-catalog\read-write-file\src\main\scripts</scriptSourceDirectory>
+    <testSourceDirectory>C:\dev\projects\mule\samples-catalog\read-write-file\src\test\java</testSourceDirectory>
+    <outputDirectory>C:\dev\projects\mule\samples-catalog\read-write-file\target\classes</outputDirectory>
+    <testOutputDirectory>C:\dev\projects\mule\samples-catalog\read-write-file\target\test-classes</testOutputDirectory>
     <resources>
       <resource>
-        <directory>C:\dev\projects\mule\sandbox\read-write-file\src\main\resources</directory>
+        <directory>C:\dev\projects\mule\samples-catalog\read-write-file\src\main\resources</directory>
       </resource>
     </resources>
     <testResources>
       <testResource>
-        <directory>C:\dev\projects\mule\sandbox\read-write-file\src\test\resources</directory>
+        <directory>C:\dev\projects\mule\samples-catalog\read-write-file\src\test\resources</directory>
       </testResource>
     </testResources>
-    <directory>C:\dev\projects\mule\sandbox\read-write-file\target</directory>
+    <directory>C:\dev\projects\mule\samples-catalog\read-write-file\target</directory>
     <finalName>read-write-file-1.0.0-SNAPSHOT</finalName>
     <pluginManagement>
       <plugins>
@@ -164,7 +164,7 @@
               <goal>package</goal>
             </goals>
             <configuration>
-              <classifier>mule-application-example</classifier>
+              <classifier>sample</classifier>
               <attachMuleSources>true</attachMuleSources>
             </configuration>
           </execution>
@@ -175,7 +175,7 @@
               <goal>generate-test-sources</goal>
             </goals>
             <configuration>
-              <classifier>mule-application-example</classifier>
+              <classifier>sample</classifier>
               <attachMuleSources>true</attachMuleSources>
             </configuration>
           </execution>
@@ -186,7 +186,7 @@
               <goal>clean</goal>
             </goals>
             <configuration>
-              <classifier>mule-application-example</classifier>
+              <classifier>sample</classifier>
               <attachMuleSources>true</attachMuleSources>
             </configuration>
           </execution>
@@ -197,7 +197,7 @@
               <goal>test-compile</goal>
             </goals>
             <configuration>
-              <classifier>mule-application-example</classifier>
+              <classifier>sample</classifier>
               <attachMuleSources>true</attachMuleSources>
             </configuration>
           </execution>
@@ -208,7 +208,7 @@
               <goal>generate-test-resources</goal>
             </goals>
             <configuration>
-              <classifier>mule-application-example</classifier>
+              <classifier>sample</classifier>
               <attachMuleSources>true</attachMuleSources>
             </configuration>
           </execution>
@@ -219,7 +219,7 @@
               <goal>site</goal>
             </goals>
             <configuration>
-              <classifier>mule-application-example</classifier>
+              <classifier>sample</classifier>
               <attachMuleSources>true</attachMuleSources>
             </configuration>
           </execution>
@@ -230,7 +230,7 @@
               <goal>compile</goal>
             </goals>
             <configuration>
-              <classifier>mule-application-example</classifier>
+              <classifier>sample</classifier>
               <attachMuleSources>true</attachMuleSources>
             </configuration>
           </execution>
@@ -241,7 +241,7 @@
               <goal>process-sources</goal>
             </goals>
             <configuration>
-              <classifier>mule-application-example</classifier>
+              <classifier>sample</classifier>
               <attachMuleSources>true</attachMuleSources>
             </configuration>
           </execution>
@@ -252,7 +252,7 @@
               <goal>process-resources</goal>
             </goals>
             <configuration>
-              <classifier>mule-application-example</classifier>
+              <classifier>sample</classifier>
               <attachMuleSources>true</attachMuleSources>
             </configuration>
           </execution>
@@ -263,7 +263,7 @@
               <goal>process-classes</goal>
             </goals>
             <configuration>
-              <classifier>mule-application-example</classifier>
+              <classifier>sample</classifier>
               <attachMuleSources>true</attachMuleSources>
             </configuration>
           </execution>
@@ -274,7 +274,7 @@
               <goal>initialize</goal>
             </goals>
             <configuration>
-              <classifier>mule-application-example</classifier>
+              <classifier>sample</classifier>
               <attachMuleSources>true</attachMuleSources>
             </configuration>
           </execution>
@@ -285,7 +285,7 @@
               <goal>generate-sources</goal>
             </goals>
             <configuration>
-              <classifier>mule-application-example</classifier>
+              <classifier>sample</classifier>
               <attachMuleSources>true</attachMuleSources>
             </configuration>
           </execution>
@@ -296,13 +296,13 @@
               <goal>validate</goal>
             </goals>
             <configuration>
-              <classifier>mule-application-example</classifier>
+              <classifier>sample</classifier>
               <attachMuleSources>true</attachMuleSources>
             </configuration>
           </execution>
         </executions>
         <configuration>
-          <classifier>mule-application-example</classifier>
+          <classifier>sample</classifier>
           <attachMuleSources>true</attachMuleSources>
         </configuration>
       </plugin>
@@ -312,7 +312,6 @@
         <configuration>
           <tagNameFormat>v@{project.version}</tagNameFormat>
           <pushChanges>false</pushChanges>
-          <autoversionsubmodules>true</autoversionsubmodules>
         </configuration>
       </plugin>
       <plugin>
@@ -412,7 +411,7 @@
               <goal>site</goal>
             </goals>
             <configuration>
-              <outputDirectory>C:\dev\projects\mule\sandbox\read-write-file\target\site</outputDirectory>
+              <outputDirectory>C:\dev\projects\mule\samples-catalog\read-write-file\target\site</outputDirectory>
               <reportPlugins>
                 <reportPlugin>
                   <groupId>org.apache.maven.plugins</groupId>
@@ -428,7 +427,7 @@
               <goal>site</goal>
             </goals>
             <configuration>
-              <outputDirectory>C:\dev\projects\mule\sandbox\read-write-file\target\site</outputDirectory>
+              <outputDirectory>C:\dev\projects\mule\samples-catalog\read-write-file\target\site</outputDirectory>
               <reportPlugins>
                 <reportPlugin>
                   <groupId>org.apache.maven.plugins</groupId>
@@ -444,7 +443,7 @@
               <goal>deploy</goal>
             </goals>
             <configuration>
-              <outputDirectory>C:\dev\projects\mule\sandbox\read-write-file\target\site</outputDirectory>
+              <outputDirectory>C:\dev\projects\mule\samples-catalog\read-write-file\target\site</outputDirectory>
               <reportPlugins>
                 <reportPlugin>
                   <groupId>org.apache.maven.plugins</groupId>
@@ -455,7 +454,7 @@
           </execution>
         </executions>
         <configuration>
-          <outputDirectory>C:\dev\projects\mule\sandbox\read-write-file\target\site</outputDirectory>
+          <outputDirectory>C:\dev\projects\mule\samples-catalog\read-write-file\target\site</outputDirectory>
           <reportPlugins>
             <reportPlugin>
               <groupId>org.apache.maven.plugins</groupId>
@@ -480,6 +479,6 @@
     </plugins>
   </build>
   <reporting>
-    <outputDirectory>C:\dev\projects\mule\sandbox\read-write-file\target\site</outputDirectory>
+    <outputDirectory>C:\dev\projects\mule\samples-catalog\read-write-file\target\site</outputDirectory>
   </reporting>
 </project>
