@@ -1,0 +1,34 @@
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+            http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
+            http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+
+    <configuration-properties doc:name="Configuration properties" file="mule-artifact.properties" />
+
+    <http:request-config name="client_config" doc:name="HTTP client configuration">
+        <http:request-connection protocol="HTTPS" host="jsonplaceholder.typicode.com" port="443"/>
+    </http:request-config>
+
+    <flow name="read-ws-write-file-sample">
+
+        <scheduler doc:name="read-ws-transform">
+            <scheduling-strategy>
+                <fixed-frequency frequency="${read-ws-transform.polling.frequency}"/>
+            </scheduling-strategy>
+        </scheduler>
+
+        <http:request method="GET" path="todos" config-ref="client_config" />
+
+        <logger level="INFO" message="#[payload]"/>
+
+        <set-payload value="#[%dw 2.0 output application/json --- items: payload map ((item, index) -> { UserID : item.id, Title : item.title })]" mimeType="text/xml" encoding="UTF-8" />
+
+        <logger level="INFO" message="#[payload]"/>
+
+    </flow>
+
+</mule>
