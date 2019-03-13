@@ -1,0 +1,50 @@
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+                          http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+
+    <configuration-properties doc:name="Configuration properties" file="mule-artifact.properties" />
+
+    <db:config name="database_config" doc:name="Database Config">
+        <db:my-sql-connection host="${db.host}" port="3306" user="${db.user}" password="${db.password}" database="integration" />
+    </db:config>
+
+    <flow name="read-write-db-flow">
+
+        <scheduler doc:name="read-write-db-scheduler">
+            <scheduling-strategy>
+                <fixed-frequency frequency="${db.polling.frequency}"/>
+            </scheduling-strategy>
+        </scheduler>
+
+        <db:select config-ref="database_config" doc:name="Select Next Id" doc:id="39e586c3-6b0c-4974-aa14-c99d68d490da" >
+            <db:sql>SELECT coalesce(max(id), 0) + 1 as next FROM record_execution</db:sql>
+        </db:select>
+
+        <logger level="INFO" message="#['Found MAX value ' + payload.next]"/>
+
+        <!-- Results from database comes as an Array, we pick the value located at [0]
+            and put this into a reusable variable instead -->
+        <set-variable variableName="next" value="#[payload.next[0]]"/>
+
+        <logger level="INFO" message="#[vars.next]"/>
+
+        <db:insert config-ref="database_config">
+            <db:sql>INSERT INTO record_execution (id, started, message) VALUES (:id, now(), :message)</db:sql>
+            <db:input-parameters><![CDATA[#[{'id' : vars.next, 'message' : 'Payload is recorded'}]]]></db:input-parameters>
+        </db:insert>
+
+        <logger level="INFO" message="#['Inserted record with start date']"/>
+
+        <db:update config-ref="database_config">
+            <db:sql>UPDATE record_execution SET finished = now() WHERE id = :id</db:sql>
+            <db:input-parameters>#[{'id' : vars.next}]</db:input-parameters>
+        </db:update>
+
+        <logger level="INFO" message="#['Updated record with finished date']"/>
+
+    </flow>
+
+</mule>

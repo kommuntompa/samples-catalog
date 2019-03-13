@@ -1,0 +1,20 @@
+{
+  "domain": "default",
+  "configs": [
+    "read-write-db.xml"
+  ],
+  "redeploymentEnabled": true,
+  "name": "Read max value from DB and assign +1 as a new id",
+  "minMuleVersion": "4.1.1",
+  "requiredProduct": "MULE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedResources": []
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}
