@@ -25,7 +25,33 @@
 
         <logger level="INFO" message="#[payload]"/>
 
-        <set-payload value="#[%dw 2.0 output application/json --- items: payload map ((item, index) -> { UserID : item.id, Title : item.title })]" mimeType="text/xml" encoding="UTF-8" />
+        <!-- Simple transformation of payload, remove attributes and rename them using another notation -->
+        <set-payload value="#[%dw 2.0 output application/json --- items: payload map ((item, index) -> { UserID : item.id, Title : item.title })]" mimeType="application/json" encoding="UTF-8" />
+
+        <logger level="INFO" message="#[payload]"/>
+
+        <scripting:execute doc:name="Transform using Groovy" engine="groovy">
+            <scripting:code>
+                import groovy.json.JsonSlurper;
+                import groovy.json.JsonOutput;
+
+                // Comes as a Stream, we need to convert it to a string so we can work with it
+                // as "pure" JSON.
+                java.util.Scanner s = new java.util.Scanner(payload).useDelimiter("\\A");
+                def payload_as_string = s.hasNext() ? s.next() : "";
+
+                // Slurp it
+                def todos = new JsonSlurper().parseText(payload_as_string)
+
+                // For each entry "MASK" the Title attribute
+                todos.items.each {
+                    it."Title" = "######"
+                }
+
+                // Return the result as a "string"
+                payload = JsonOutput.toJson(todos)
+            </scripting:code>
+        </scripting:execute>
 
         <logger level="INFO" message="#[payload]"/>
 
