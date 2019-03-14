@@ -5,8 +5,12 @@
       xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
                           http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 
+    <!-- Load properties found in src/main/resources/ for this specific application -->
     <configuration-properties doc:name="Configuration properties" file="mule-artifact.properties" />
 
+    <!--
+        Get the datasource connection settings from variables loaded in the configuration-properties
+    -->
     <db:config name="database_config" doc:name="Database Config">
         <db:my-sql-connection host="${db.host}" port="3306" user="${db.user}" password="${db.password}" database="integration" />
     </db:config>
@@ -14,23 +18,31 @@
     <flow name="read-write-db-flow">
 
         <scheduler doc:name="read-write-db-scheduler">
+            <!--
+                Get the polling frequency variables loaded in the configuration-properties
+            -->
             <scheduling-strategy>
                 <fixed-frequency frequency="${db.polling.frequency}"/>
             </scheduling-strategy>
         </scheduler>
 
+        <!-- Select MAX value from table record_execution -->
         <db:select config-ref="database_config" doc:name="Select Next Id" doc:id="39e586c3-6b0c-4974-aa14-c99d68d490da" >
             <db:sql>SELECT coalesce(max(id), 0) + 1 as next FROM record_execution</db:sql>
         </db:select>
 
         <logger level="INFO" message="#['Found MAX value ' + payload.next]"/>
 
-        <!-- Results from database comes as an Array, we pick the value located at [0]
-            and put this into a reusable variable instead -->
+        <!--
+            Results from database is expressed as an Array, we pick the value located at [0]
+            and put this into a reusable variable instead
+         -->
         <set-variable variableName="next" value="#[payload.next[0]]"/>
 
         <logger level="INFO" message="#[vars.next]"/>
 
+        <!-- Insert new record for this execution, use the previously
+            returned maxvalue as new ID -->
         <db:insert config-ref="database_config">
             <db:sql>INSERT INTO record_execution (id, started, message) VALUES (:id, now(), :message)</db:sql>
             <db:input-parameters><![CDATA[#[{'id' : vars.next, 'message' : 'Payload is recorded'}]]]></db:input-parameters>
@@ -38,6 +50,7 @@
 
         <logger level="INFO" message="#['Inserted record with start date']"/>
 
+        <!-- Update the previously inserted record with "finished" time-stamp -->
         <db:update config-ref="database_config">
             <db:sql>UPDATE record_execution SET finished = now() WHERE id = :id</db:sql>
             <db:input-parameters>#[{'id' : vars.next}]</db:input-parameters>

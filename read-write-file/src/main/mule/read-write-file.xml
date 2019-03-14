@@ -7,6 +7,7 @@
       xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
             http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
 
+    <!-- Load properties found in src/main/resources/ for this specific application -->
     <configuration-properties doc:name="Configuration properties" file="mule-artifact.properties" />
 
     <file:config name="file_config" doc:name="File Configuration">
@@ -15,6 +16,9 @@
 
     <flow name="read-write-file-sample">
 
+        <!--
+            Get the polling frequency variables loaded in the configuration-properties
+        -->
         <scheduler doc:name="read-write-file-scheduler">
             <scheduling-strategy>
                 <fixed-frequency frequency="${read-write-file.polling.frequency}"/>
@@ -23,6 +27,9 @@
 
         <logger level="INFO" message="#['Starting read-write-file flow']"/>
 
+        <!--
+            Create file ping.txt in directory specified in file_config reference
+         -->
         <file:write config-ref="file_config" path="ping.txt">
             <file:content>
                 #['Look Ma! I can write to a file']
@@ -31,6 +38,10 @@
 
         <logger level="INFO" message="#['Added content to ping.txt']"/>
 
+        <!--
+            Move ping.txt to backup/pong.txt with overwrite option,
+            the . directory should now be clear from ping.txt
+         -->
         <file:move config-ref="file_config" sourcePath="ping.txt" overwrite="true" targetPath="backup" renameTo="pong.txt"/>
 
         <logger level="INFO" message="#['Moved ping.txt to backup\pong.txt with overwriting enabled']"/>

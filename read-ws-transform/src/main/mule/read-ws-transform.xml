@@ -7,29 +7,45 @@
             http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
             http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 
+    <!-- Load properties found in src/main/resources/ for this specific application -->
     <configuration-properties doc:name="Configuration properties" file="mule-artifact.properties" />
 
+    <!--
+        Get the webservice settings from variables loaded in the configuration-properties
+    -->
     <http:request-config name="client_config" doc:name="HTTP client configuration">
         <http:request-connection protocol="HTTPS" host="jsonplaceholder.typicode.com" port="443"/>
     </http:request-config>
 
     <flow name="read-ws-write-file-sample">
 
+        <!--
+            Get the polling frequency variables loaded in the configuration-properties
+        -->
         <scheduler doc:name="read-ws-transform">
             <scheduling-strategy>
                 <fixed-frequency frequency="${read-ws-transform.polling.frequency}"/>
             </scheduling-strategy>
         </scheduler>
 
+        <!--
+            Get a list of items from resources /todos using the client_config
+        -->
         <http:request method="GET" path="todos" config-ref="client_config" />
 
         <logger level="INFO" message="#[payload]"/>
 
-        <!-- Simple transformation of payload, remove attributes and rename them using another notation -->
+        <!--
+            Simple transformation of payload, remove some attributes and
+            rename the remaining using another notation. This example using the DataWeave 2.0 syntax
+         -->
         <set-payload value="#[%dw 2.0 output application/json --- items: payload map ((item, index) -> { UserID : item.id, Title : item.title })]" mimeType="application/json" encoding="UTF-8" />
 
         <logger level="INFO" message="#[payload]"/>
 
+        <!--
+            Transform payload using Groovy
+        -->
         <scripting:execute doc:name="Transform using Groovy" engine="groovy">
             <scripting:code>
                 import groovy.json.JsonSlurper;

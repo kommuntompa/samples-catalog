@@ -7,28 +7,44 @@
             http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
             http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 
+    <!-- Load properties found in src/main/resources/ for this specific application -->
     <configuration-properties doc:name="Configuration properties" file="mule-artifact.properties" />
 
+    <!--
+        Get the webservice settings from variables loaded in the configuration-properties
+    -->
     <http:request-config name="client_config" doc:name="HTTP client configuration">
         <http:request-connection protocol="HTTPS" host="jsonplaceholder.typicode.com" port="443"/>
     </http:request-config>
 
+    <!--
+        Get the file configuration settings from variables loaded in the configuration-properties
+    -->
     <file:config name="file_config" doc:name="File Configuration">
         <file:connection workingDir="c:\temp" />
     </file:config>
 
     <flow name="read-ws-write-file-sample">
 
+        <!--
+            Get the polling frequency variables loaded in the configuration-properties
+        -->
         <scheduler doc:name="read-ws-write-file-scheduler">
             <scheduling-strategy>
                 <fixed-frequency frequency="${read-ws.polling.frequency}"/>
             </scheduling-strategy>
         </scheduler>
 
+        <!--
+            Get a list of items from resources /todos using the client_config
+        -->
         <http:request method="GET" path="todos" config-ref="client_config" />
 
         <logger level="INFO" message="#['Executed HTTP GET from Server']"/>
 
+        <!--
+            Store the webservice response into jsonplaceholder.typicaode.com.txt file
+        -->
         <file:write config-ref="file_config" path="jsonplaceholder.typicode.com.txt">
             <file:content>#[payload]</file:content>
         </file:write>
