@@ -28,6 +28,10 @@
                             <artifactId>activemq-all</artifactId>
                         </sharedLibrary>
                     </sharedLibraries>
+                    <standaloneDeployment>
+                        <muleHome>C:\dev\env\mule-standalone-4.1.1</muleHome>
+                        <muleVersion>4.1.1</muleVersion>
+                    </standaloneDeployment>
                 </configuration>
             </plugin>
         </plugins>

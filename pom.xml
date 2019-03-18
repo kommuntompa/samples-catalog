@@ -49,6 +49,10 @@
                    <classifier>sample</classifier>
                    <!-- Fix until MMP-305 is solved -->
                    <attachMuleSources>true</attachMuleSources>
+                   <standaloneDeployment>
+                       <muleHome>C:\dev\env\mule-standalone-4.1.1</muleHome>
+                       <muleVersion>4.1.1</muleVersion>
+                   </standaloneDeployment>
                </configuration>
            </plugin>
            <plugin>
@@ -115,9 +119,9 @@
         </snapshotRepository>
     </distributionManagement>
     <scm>
-        <connection>scm:git:https://github.com/mulesoft/anypoint-examples.git</connection>
-        <developerConnection>scm:git:https://github.com/mulesoft/anypoint-examples.git</developerConnection>
-        <url>https://github.com/mulesoft/anypoint-examples</url>
+        <connection>scm:git:https://github.com/kommuntompa/samples-catalog.git</connection>
+        <developerConnection>scm:git:https://github.com/kommuntompa/samples-catalog.git</developerConnection>
+        <url>https://github.com/kommuntompa/samples-catalog</url>
         <tag>HEAD</tag>
     </scm>
 </project>
