@@ -12,6 +12,7 @@
         <module>read-ws-write-file</module>
         <module>read-ws-transform</module>
         <module>read-write-db</module>
+        <module>read-write-activemq</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -35,6 +36,7 @@
         <vm.module.version>1.1.1</vm.module.version>
         <wsc.connector.version>1.1.1</wsc.connector.version>
         <workday.connector.version>9.2.0</workday.connector.version>
+        <jms.connector.version>1.2.1</jms.connector.version>
     </properties>
     <build>
         <plugins>

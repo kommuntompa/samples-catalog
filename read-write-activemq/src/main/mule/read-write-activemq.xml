@@ -1,0 +1,57 @@
+<mule xmlns:jms="http://www.mulesoft.org/schema/mule/jms"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+                          http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+                          http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd">
+
+    <!-- Load properties found in src/main/resources/ for this specific application -->
+    <configuration-properties doc:name="Configuration properties" file="mule-artifact.properties" />
+
+    <jms:config name="jms_config" doc:name="JMS Configuration" doc:id="5411c616-8b37-48d4-b875-2025440eef69" >
+        <jms:active-mq-connection username="${activemq.user}" password="${activemq.password}">
+            <jms:caching-strategy >
+                <jms:default-caching />
+            </jms:caching-strategy>
+            <jms:factory-configuration brokerUrl="tcp://${activemq.host}:61616" maxRedelivery="5"/>
+        </jms:active-mq-connection>
+        <jms:consumer-config>
+            <jms:consumer-type >
+                <jms:queue-consumer />
+            </jms:consumer-type>
+        </jms:consumer-config>
+    </jms:config>
+
+    <flow name="publish-message-flow">
+
+        <scheduler doc:name="read-write-activemq-scheduler">
+            <!--
+                Get the polling frequency variables loaded in the configuration-properties
+            -->
+            <scheduling-strategy>
+                <fixed-frequency frequency="${read-write-activemq.polling.frequency}"/>
+            </scheduling-strategy>
+        </scheduler>
+
+        <set-payload value="#['Hello World!']" mimeType="text/plain" encoding="UTF-8" />
+
+        <jms:publish config-ref="jms_config" destination="consume-message-flow.in" destinationType="QUEUE" />
+
+        <logger level="INFO" message="#['Message sent successfully!']"/>
+
+    </flow>
+
+    <flow name="consume-message-flow">
+        <jms:listener config-ref="jms_config" destination="consume-message-flow.in">
+            <jms:consumer-type >
+                <jms:queue-consumer />
+            </jms:consumer-type>
+        </jms:listener>
+
+        <logger level="INFO" message="#['Message received successfully!']"/>
+
+    </flow>
+
+</mule>

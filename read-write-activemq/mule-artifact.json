@@ -1,0 +1,20 @@
+{
+  "domain": "default",
+  "configs": [
+    "read-write-activemq.xml"
+  ],
+  "redeploymentEnabled": true,
+  "name": "Publish message in one flow and pick up in another",
+  "minMuleVersion": "4.1.1",
+  "requiredProduct": "MULE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedResources": []
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}
