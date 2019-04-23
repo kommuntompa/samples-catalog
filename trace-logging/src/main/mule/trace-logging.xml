@@ -1,0 +1,43 @@
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+
+    <!-- Load properties found in src/main/resources/ for this specific application -->
+    <configuration-properties doc:name="Configuration properties" file="mule-artifact.properties" />
+
+    <flow name="trace-logging">
+
+        <!--
+            Get the polling frequency variables loaded in the configuration-properties
+        -->
+        <scheduler>
+            <scheduling-strategy>
+                <fixed-frequency frequency="${trace-logging.polling.frequency}"/>
+            </scheduling-strategy>
+        </scheduler>
+
+        <!-- Trigger Start Event from reference flow -->
+        <flow-ref name="start"/>
+
+        <!-- Just set a dummy variable -->
+        <set-variable variableName="caseId" value="ABC-12345-123456-1234" />
+
+        <!-- Trigger Stop Event from reference flow -->
+        <flow-ref name="stop"/>
+
+    </flow>
+
+    <flow name="start">
+        <set-variable variableName="startTime" value="#[now()]" />
+        <logger level="INFO" message="CorrelationID: #[correlationId]"/>
+        <logger level="INFO" message="#[correlationId] #[vars]"/>
+    </flow>
+
+    <flow name="stop">
+        <set-variable variableName="endTime" value="#[now()]" />
+        <set-variable variableName="duration" value="#[vars.endTime as Number - vars.startTime as Number]" />
+        <logger level="INFO" message="#[correlationId] #[vars]"/>
+    </flow>
+
+</mule>

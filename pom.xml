@@ -13,6 +13,7 @@
         <module>read-ws-transform</module>
         <module>read-write-db</module>
         <module>read-write-activemq</module>
+        <module>trace-logging</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
